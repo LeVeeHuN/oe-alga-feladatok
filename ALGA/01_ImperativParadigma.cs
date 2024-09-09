@@ -1,11 +1,13 @@
+using System.Collections;
+
 namespace OE.ALGA.Paradigmak
 {
-    interface IVegrehajto
+    public interface IVegrehajthato
     {
         public void Vegrehajtas();
     }
 
-    interface IFuggo
+    public interface IFuggo
     {
         public bool FuggosegTeljesul { get; }
     }
@@ -13,14 +15,14 @@ namespace OE.ALGA.Paradigmak
 
 
 
-    class TaroloMegteltKivetel : Exception
+    public class TaroloMegteltKivetel : Exception
     {
 
     }
 
 
 
-    class FeladatTarolo<T> where T : IVegrehajto
+    public class FeladatTarolo<T> : IEnumerable<T> where T : IVegrehajthato
     {
         protected T[] tarolo;
         protected int n;
@@ -42,13 +44,22 @@ namespace OE.ALGA.Paradigmak
         {
             foreach (T elem in tarolo)
             {
-                elem.Vegrehajtas();
+                if (elem != null) elem.Vegrehajtas();
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new FeladatTaroloBejaro<T>(tarolo, n);
         }
     }
 
-    class FuggoFeladatTarolo<T> : FeladatTarolo<T>
-        where T : IVegrehajto, IFuggo
+    public class FuggoFeladatTarolo<T> : FeladatTarolo<T> where T : IVegrehajthato, IFuggo
     {
         public FuggoFeladatTarolo(uint meret) : base(meret) { }
 
@@ -56,11 +67,48 @@ namespace OE.ALGA.Paradigmak
         {
             foreach(T elem in tarolo)
             {
-                if (elem.FuggosegTeljesul) elem.Vegrehajtas();
+                if (elem != null && elem.FuggosegTeljesul) elem.Vegrehajtas();
             }
         }
-
     }
 
-    // Utolsó feladat maradt hátra
+    public class FeladatTaroloBejaro<T> : IEnumerator<T>
+    {
+        private int jelenlegiIndex;
+        private int elemekSzama;
+        T[] tarolo;
+
+        public FeladatTaroloBejaro(T[] tarolo, int elemekSzama)
+        {
+            this.tarolo = tarolo;
+            this.elemekSzama = elemekSzama;
+            Reset();
+        }
+
+        public bool MoveNext()
+        {
+            if (jelenlegiIndex >= elemekSzama) return false;
+            jelenlegiIndex++;
+            return true;
+        }
+
+        public void Reset()
+        {
+            jelenlegiIndex = -1;
+        }
+
+        object? IEnumerator.Current => Current;
+
+        public void Dispose()
+        {
+        }
+
+        public T Current
+        {
+            get
+            {
+                return tarolo[jelenlegiIndex];
+            }
+        }
+    }
 }
