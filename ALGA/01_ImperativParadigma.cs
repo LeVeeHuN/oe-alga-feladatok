@@ -42,9 +42,9 @@ namespace OE.ALGA.Paradigmak
 
         public virtual void MindentVegrehajt()
         {
-            foreach (T elem in tarolo)
+            for (int i = 0; i < n; i++)
             {
-                if (elem != null) elem.Vegrehajtas();
+                tarolo[i].Vegrehajtas();
             }
         }
 
@@ -65,9 +65,9 @@ namespace OE.ALGA.Paradigmak
 
         public override void MindentVegrehajt()
         {
-            foreach(T elem in tarolo)
+            for (int i = 0; i < n; i++)
             {
-                if (elem != null && elem.FuggosegTeljesul) elem.Vegrehajtas();
+                if (tarolo[i].FuggosegTeljesul) tarolo[i].Vegrehajtas();
             }
         }
     }
@@ -87,8 +87,8 @@ namespace OE.ALGA.Paradigmak
 
         public bool MoveNext()
         {
-            if (jelenlegiIndex >= elemekSzama) return false;
             jelenlegiIndex++;
+            if (jelenlegiIndex >= elemekSzama) return false;
             return true;
         }
 
