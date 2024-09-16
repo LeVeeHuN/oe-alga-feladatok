@@ -217,7 +217,8 @@ namespace OE.ALGA.Tesztek
         }
     }
 
-    class BejarasokTeszt //F5.
+    [TestClass()]
+    public class BejarasokTeszt //F5.
     {
         [TestMethod()]
         public void FeladatTaroloBejaroTeszt()
